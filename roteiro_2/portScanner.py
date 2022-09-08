@@ -10,6 +10,5 @@ for i in range(port1, port2):
     if s.connect_ex((ip, i)) == 0:
         service = socket.getservbyport(i, "tcp")
         print(f"A Porta {i} está aberta, rodando o serviço {service}")
-	
 
-s.close()
+    s.close()
