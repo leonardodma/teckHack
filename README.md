@@ -114,9 +114,66 @@ Utilizar extesão **Wappalyzer**
 wafw00f -a -v {dominio}
 ```
 
+## Processos e permissões
+
+- **Processos:**
+
+Em sistemas operacionais Unix, existe sistema de processos pais e filhos, em que o processo pais de todos é o `systemd`.
+
+Listando processos
+
+```console
+pstree
+```
+
+Lista processos ativos
+
+```console
+ps
+```
+
+Lista processos em forma dinâmica
+
+```console
+top
+```
+
+Finalizar processos
+
+```console
+kill -9 {process_id}
+```
+
+- **Permissões**
+
+Obter tipos de permição dos arquivos:
+
+```console
+ls -l
+```
+
+![permissões](./img/permissions_commands.jpg)
+
+Alterar permissões
+
+![permissões](./img/permissions.png)
+
+```console
+chmod {permission} {filename}
+```
+
+Na permissão, são colocados uma sequência de 3 números que fazem referências as permissões de Owner, Group e Other Users, respectiviamente. Esses números são calculados pela das permissões, em que:
+
+4 - Permissão de leitura (r)
+2 - Permissão de escrita (w)
+1 - Permissão de execução (x)
+
+Assim, a permissão **777** concede leitura, escrita e execução para todos os grupos.
+
 ## Comandos importantes
 
 - **Arp spoofing:** Este ataque consiste em adicionar ou substituir na tabela arp da `maquina alvo` uma entrada que aponte um IP do Alvo para o MAC Address do Atacante na tabela ARP da vítima.
+
   É o método mais rápido de se estabelecer no meio da comunicação entre duas máquinas e interceptar as informações enviadas entre ambas
 
 ```console
