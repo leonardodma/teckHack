@@ -2,9 +2,35 @@
 
 Roteiros e Resumo da disciplina Tecnologias Hacker
 
+## TCP
+
+Faz a comunicação entre sockets (combinação de IPs e Sockets). Utiliza o three-way handshaking para estabelecer conexões
+
+![tcp](./img/tcp.png)
+
 ## Wireshark
 
-Observação de pacotes (importando arquivos pcap).Os arquivos pcap podem ser adquiridos usando o TCP dump
+Observação de pacotes (importando arquivos pcap).Os arquivos pcap podem ser adquiridos usando o TCP dump, ou utilizando o sistema de obtenção de pacotes do Wireshark.
+
+Filtro por IP, para incontrar informações como o `mac_address`:
+
+```console
+ip.addr == {ip}
+```
+
+Obtenção de infomações de nome de usuário e host.
+
+```console
+kerberos and ip.src == 172.17.1.129
+```
+
+Em `CnameString`, clicar em `Apply as Column` para obter o nome de usuário. O `HostName` termina com `$`. o `SnameString` informa o nome do serviço que está sendo solicitado. O que cada campo representa no protocolo está evidenciado no site: https://medium.com/@robert.broeckelmann/kerberos-wireshark-captures-a-windows-login-example-151fabf3375a
+
+Obtenção de pacotes http recebidos com sucesso
+
+```console
+http.response.code == 200
+```
 
 **TCP Dump:** É uma ferramenta utilizada para monitorar os pacotes trafegados numa rede de computadores. Ela mostra os cabeçalhos dos pacotes que passam pela interface de rede.
 
@@ -66,6 +92,10 @@ Utilizando o Nmap
 
 ```console
 nmap {ip}
+```
+
+```console
+nmap -sC -sV {ip}
 ```
 
 - Obter informações do sistema operacional
@@ -194,7 +224,7 @@ Assim, a permissão **777** concede leitura, escrita e execução para todos os 
 
 ## Controle de Acesso e Firewall
 
-texto
+Sistema ou grupo de sistemas que reforça uma política de segurança dos dados entre uma organização e usuários situados fora desta, em particular na Internet, criando uma barreira inteligente através da qual só passa tráfego autorizado (ex - Security Group no AWS).
 
 ## Quebra de Senhas
 
@@ -227,6 +257,12 @@ web1:1001:aad3b435b51404eeaad3b435b51404ee:**59edfb15aec624e7ccf5c8c50682c649**:
 
 ![shadow](./img/shadow.png)
 
+Utilizando a ferramenta **John the Riper**, é possível descriptografar o **shadow**
+
+```console
+john shadow
+```
+
 ##### Geração de Wordlists
 
 - Cewl
@@ -246,6 +282,8 @@ crunch {minimo_caracteres} {maximo_caracteres} qwerty > palavra.txt
 ```console
 python3 cupp.py -i
 ```
+
+Nesse link https://packetstormsecurity.com/Crackers/wordlists existem vários tipos de Wordlist com diferentes temas.
 
 ##### Descobrindo user e pass com hydra
 
