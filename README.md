@@ -108,6 +108,12 @@ telnet {ip} 22
 nmap -O {ip}
 ```
 
+- Obter usário da máquina 
+
+```console
+/opt/enum4linux.pl -a {ip} | tee enum4linux.log
+```
+
 ## Listar Vulnerabilidades do alvo
 
 - Vulnerabilidades (CVE - Common Vulnerabilities and Exposures)
