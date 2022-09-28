@@ -8,6 +8,16 @@ Faz a comunicação entre sockets (combinação de IPs e Sockets). Utiliza o thr
 
 ![tcp](./img/tcp.png)
 
+Flags de comunicação:
+
+| Flag | Siginificado                                 |
+| ---- | -------------------------------------------- |
+| Syn  | Inicia uma comunicação TCP                   |
+| Fin  | Termina a comunicação                        |
+| Rst  | Reseta a comunicação                         |
+| Psh  | Envia dados                                  |
+| Ack  | Indica que o pacote foi recebido com sucesso |
+
 ## Wireshark
 
 Observação de pacotes (importando arquivos pcap).Os arquivos pcap podem ser adquiridos usando o TCP dump, ou utilizando o sistema de obtenção de pacotes do Wireshark.
@@ -108,7 +118,7 @@ telnet {ip} 22
 nmap -O {ip}
 ```
 
-- Obter usário da máquina 
+- Obter usário da máquina
 
 ```console
 /opt/enum4linux.pl -a {ip} | tee enum4linux.log
@@ -126,6 +136,16 @@ nmap -sV --script vuln {ip} -p{port1},{port2}
 
 ```console
 nmap -sV --script malware {ip} -p{port1},{port2}
+```
+
+! Importante: Sempre que for usado o Nmap, é necessário usar ferramentas como o nkito e telnet para termos certeza das saídas:
+
+```console
+nikto -h {ip}
+```
+
+```console
+telnet {ip} {port}
 ```
 
 ## Encontrar Informações de um domínio
@@ -161,6 +181,12 @@ ping {dominio}
 ```
 
 A partir desse comando, com o resultado do TTL, é possível inferir o sistema opeacional, usando a tabela desse [link](https://www.yeahhub.com/identify-operating-system-using-ping-command/)
+
+- Vulnerabilidades de um domínio (ip)
+
+```console
+nikto -h {ip}
+```
 
 - Tecnologias Utilizadas no site:
 
@@ -306,6 +332,44 @@ hydra -L {listausuarios.txt} -P {wordlist.txt} {ip_alvo} {protocolo}
 ```
 
 `Protocolos Comuns: ssh, ftp`
+
+## Logs
+
+h: host
+l: identidade do cliente, geralmente em branco (representado por um hífen (-) no arquivo)
+u: username
+t: timestamp
+s: status code of the request
+b: número de bytes
+Referer: URL de onde o usuário veio para chegar ao seu site, se enviado pelo cliente para o servidor (entre aspas duplas)
+
+- Combined
+
+Formato: `"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\""`
+
+```txt
+104.131.146.119 - - [23/Jan/2019:06:56:53 +0100] "GET / HTTP/1.1" 200 2014 "-" "Mozilla/5.0 zgrab/0.x"
+```
+
+- Debug
+
+Formato: `"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %P %T"`
+
+- Full
+
+Formato: `"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %T %v"`
+
+- Common
+
+Formato: `"%h %l %u %t \"%r\" %>s %b"`
+
+- Refer
+
+Formato : `"%{Referer}i -> %U"`
+
+- Agent
+
+Formato: `"%{User-agent}i"`
 
 ## Comandos importantes
 

@@ -47,7 +47,7 @@ def get_ports_open(ip):
     num_open_ports = 0
     for i in range(1, 1000):
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-            sock.settimeout(1)
+            sock.settimeout(0.1)
             if sock.connect_ex((ip, i)) == 0:
                 num_open_ports += 1
             sock.settimeout(None)
