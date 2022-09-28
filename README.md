@@ -331,7 +331,7 @@ hydra -l {username} -P {wordlist.txt} {ip_alvo} {protocolo}
 hydra -L {listausuarios.txt} -P {wordlist.txt} {ip_alvo} {protocolo}
 ```
 
-`Protocolos Comuns: ssh, ftp`
+`Protocolos Comuns: ssh, ftp, rdp (para windows)`
 
 ## Logs
 
