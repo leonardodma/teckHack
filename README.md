@@ -331,9 +331,35 @@ hydra -l {username} -P {wordlist.txt} {ip_alvo} {protocolo}
 hydra -L {listausuarios.txt} -P {wordlist.txt} {ip_alvo} {protocolo}
 ```
 
-`Protocolos Comuns: ssh, ftp, rdp (para windows)`
+`Protocolos Comuns: tcp ou udp`
+
+## Acesso remoto
+
+Acessar linux:
+
+```console
+ssh {user}@{ip}
+```
+
+Para conseguir acessar um Linux, a porta ssh (22) deve estar aberta
+
+```console
+rlogin -l root {ip}
+```
+
+Acessar windows
+
+```console
+rdesktop-vrdp {ip}
+```
+
+Para conseguir acessar um Windows, a porta 3389 (rdp - romote desktop protocol)
 
 ## Logs
+
+Tipos de log: https://www.graylog.org/post/log-formats-a-complete-guide
+
+O log mais comum (utilizado por Web Servers) é chamado **COMMON LOG FORMAT – NCSA**
 
 h: host
 l: identidade do cliente, geralmente em branco (representado por um hífen (-) no arquivo)
